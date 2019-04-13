@@ -1,12 +1,18 @@
 ---
 layout: post
-title:  "Welcome to Jekyll!"
+title:  "Common and Useful MySQL Commands"
 date:   2019-04-09 01:32:52 -0400
-categories: jekyll update
+categories: MySQL
 ---
-You’ll find this post in your `_posts` directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run `jekyll serve`, which launches a web server and auto-regenerates your site when a file is updated.
 
-To add new posts, simply add a file in the `_posts` directory that follows the convention `YYYY-MM-DD-name-of-post.ext` and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.
+Here is a list of some common and useful sql commands, since i'm messing around with this today.
+
+Login to MySQL:
+
+{% highlight ruby %}
+mysql -u root -p
+{% endhighlight %}
+
 
 Jekyll also offers powerful support for code snippets:
 
