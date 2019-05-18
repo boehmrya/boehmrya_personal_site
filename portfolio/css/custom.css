@@ -33,6 +33,17 @@ h2.section-title {
 	padding-left: 15px;
 }
 
+.navbar-dark.navbar .nav-link.text {
+  font-size: 14px;
+  display: block;
+  color: #fff;
+  margin-top: 5px;
+}
+
+.navbar-dark.navbar .nav-link:hover {
+  color: #007bff;
+}
+
 .navbar .nav-link .fa {
 	color: #fff;
 	font-size: 2em;
@@ -42,7 +53,7 @@ h2.section-title {
 	color: #007bff;
 }
 
-p.card-text.intro {
+.card-text.intro {
 	margin-top: 3rem;
 	margin-bottom: 3rem;
 }
