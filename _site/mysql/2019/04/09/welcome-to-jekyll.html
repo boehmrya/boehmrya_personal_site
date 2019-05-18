@@ -47,20 +47,37 @@
   <div class="post-content e-content" itemprop="articleBody">
     <p>Here is a list of some common and useful sql commands, since i’m messing around with this today.</p>
 
+<p>I always keep looking these up, so this new blog is a good place to catalog them.</p>
+
 <p>Login to MySQL:</p>
 
 <figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">mysql</span> <span class="o">-</span><span class="n">u</span> <span class="n">root</span> <span class="o">-</span><span class="nb">p</span></code></pre></figure>
 
-<p>Jekyll also offers powerful support for code snippets:</p>
+<p>You’ll be prompted for your password.  Enter it.</p>
 
-<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">print_hi</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
-  <span class="nb">puts</span> <span class="s2">"Hi, </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">"</span>
-<span class="k">end</span>
-<span class="n">print_hi</span><span class="p">(</span><span class="s1">'Tom'</span><span class="p">)</span>
-<span class="c1">#=&gt; prints 'Hi, Tom' to STDOUT.</span></code></pre></figure>
+<p>Next, view the existing databases.</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">SHOW</span> <span class="no">DATABASES</span><span class="p">;</span></code></pre></figure>
+
+<p>A list of all of the existing databases will appear.</p>
+
+<p>Create a Database:</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">CREATE</span> <span class="no">DATABASE</span> <span class="n">testdb</span><span class="p">;</span></code></pre></figure>
+
+<p>testdb is the name of the database.  Now, to view the database.</p>
+
+<p>Use the database:</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">USE</span> <span class="n">testdb</span><span class="p">;</span></code></pre></figure>
+
+<p>Grant all permissions to a specific user:</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">GRANT</span> <span class="no">ALL</span> <span class="no">ON</span> <span class="n">testdb</span><span class="p">.</span><span class="nf">*</span> <span class="no">TO</span> <span class="s1">'your_mysql_name'</span><span class="err">@</span><span class="s1">'your_client_host'</span><span class="p">;</span></code></pre></figure>
 
 <p>Check out the <a href="https://jekyllrb.com/docs/home">Jekyll docs</a> for more info on how to get the most out of Jekyll. File all bugs/feature requests at <a href="https://github.com/jekyll/jekyll">Jekyll’s GitHub repo</a>. If you have questions, you can ask them on <a href="https://talk.jekyllrb.com/">Jekyll Talk</a>.</p>
 
+<p>GRANT ALL ON drupal_test.* TO root@localhost;</p>
 
   </div><a class="u-url" href="/mysql/2019/04/09/welcome-to-jekyll.html" hidden></a>
 </article>
