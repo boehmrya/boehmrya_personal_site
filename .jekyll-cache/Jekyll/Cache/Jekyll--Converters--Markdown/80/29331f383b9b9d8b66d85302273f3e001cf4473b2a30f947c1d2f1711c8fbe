@@ -1,0 +1,90 @@
+I"Ù<p>This post briefly outlines how to get content entities from the database via entity entityQuery and output them in a list via a custom controller, custom template, and array variable.</p>
+
+<p>First, we need to set up a custom module (called test) in /modules/custom/test.  Then, set up the info file called test.info.yml, and put this in it:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>name: Test Module
+description: Test some example code.
+package: Custom
+
+type: module
+core: 8.x
+</code></pre></div></div>
+
+<p>Here is a theme hook with a test_var variable to be used in the template called my-template.html.twig:</p>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="k">function</span> <span class="n">test_theme</span><span class="p">(</span><span class="nv">$existing</span><span class="p">,</span> <span class="nv">$type</span><span class="p">,</span> <span class="nv">$theme</span><span class="p">,</span> <span class="nv">$path</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">[</span>
+    <span class="s1">'my_template'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+      <span class="s1">'variables'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+        <span class="s1">'test_var'</span> <span class="o">=&gt;</span> <span class="p">[],</span>
+      <span class="p">],</span>
+    <span class="p">],</span>
+  <span class="p">];</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Then, in a controller class in src/Controller/TestController.php</p>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="kn">namespace</span> <span class="nn">Drupal\test\Controller</span><span class="p">;</span>
+
+<span class="kn">use</span> <span class="nc">Drupal\Core\Controller\ControllerBase</span><span class="p">;</span>
+
+<span class="cd">/**
+ * Defines TestController class.
+ */</span>
+<span class="kd">class</span> <span class="nc">TestController</span> <span class="kd">extends</span> <span class="nc">ControllerBase</span> <span class="p">{</span>
+
+  <span class="cd">/**
+   * Get a list of articles.
+   *
+   * @return array
+   *   Return array of articles.
+   */</span>
+  <span class="k">public</span> <span class="k">function</span> <span class="n">getArticles</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// DB query to get articles or other content</span>
+    <span class="nv">$entity_type</span> <span class="o">=</span> <span class="s1">'node'</span><span class="p">;</span>
+    <span class="nv">$query</span> <span class="o">=</span> <span class="err">\</span><span class="nc">Drupal</span><span class="o">::</span><span class="nf">entityQuery</span><span class="p">(</span><span class="nv">$entity_type</span><span class="p">);</span>
+    <span class="nv">$query</span><span class="o">-&gt;</span><span class="nf">condition</span><span class="p">(</span><span class="s1">'status'</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="nv">$query</span><span class="o">-&gt;</span><span class="nf">condition</span><span class="p">(</span><span class="s1">'type'</span><span class="p">,</span> <span class="s1">'article'</span><span class="p">);</span>
+    <span class="nv">$article_list</span> <span class="o">=</span> <span class="nv">$query</span><span class="o">-&gt;</span><span class="nf">execute</span><span class="p">();</span>
+
+    <span class="c1">// build list of rendered articles</span>
+    <span class="nv">$article_nodes</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="nv">$view_mode</span> <span class="o">=</span> <span class="s1">'default'</span><span class="p">;</span>
+    <span class="nv">$view_builder</span> <span class="o">=</span> <span class="err">\</span><span class="nc">Drupal</span><span class="o">::</span><span class="nf">entityTypeManager</span><span class="p">()</span><span class="o">-&gt;</span><span class="nf">getViewBuilder</span><span class="p">(</span><span class="nv">$entity_type</span><span class="p">);</span>
+    <span class="nv">$storage</span> <span class="o">=</span> <span class="err">\</span><span class="nc">Drupal</span><span class="o">::</span><span class="nf">entityTypeManager</span><span class="p">()</span><span class="o">-&gt;</span><span class="nf">getStorage</span><span class="p">(</span><span class="nv">$entity_type</span><span class="p">);</span>
+    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$article_list</span> <span class="k">as</span> <span class="nv">$nid</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nv">$node</span> <span class="o">=</span> <span class="nv">$storage</span><span class="o">-&gt;</span><span class="nf">load</span><span class="p">(</span><span class="nv">$nid</span><span class="p">);</span>
+      <span class="nv">$build</span> <span class="o">=</span> <span class="nv">$view_builder</span><span class="o">-&gt;</span><span class="nf">view</span><span class="p">(</span><span class="nv">$node</span><span class="p">,</span> <span class="nv">$view_mode</span><span class="p">);</span>
+      <span class="nv">$output</span> <span class="o">=</span> <span class="nf">render</span><span class="p">(</span><span class="nv">$build</span><span class="p">);</span>
+      <span class="nb">array_push</span><span class="p">(</span><span class="nv">$article_nodes</span><span class="p">,</span> <span class="nv">$output</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nv">$article_nodes</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="cd">/**
+   * Display the markup.
+   *
+   * @return array
+   *   Return markup array.
+   */</span>
+  <span class="k">public</span> <span class="k">function</span> <span class="n">content</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">[</span>
+     <span class="s1">'#theme'</span> <span class="o">=&gt;</span> <span class="s1">'my_template'</span><span class="p">,</span>
+     <span class="s1">'#test_var'</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="nf">getArticles</span><span class="p">(),</span>
+   <span class="p">];</span>
+  <span class="p">}</span>
+
+<span class="p">}</span></code></pre></figure>
+
+<p>Finally, in templates/my-template.html.twig, output the variable in a manner similar to this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+&lt;p&gt;
+{% for item in test_var %}
+  &lt;div class="item-wrap"&gt;{{ item }}&lt;/div&gt;
+{% endfor %}
+&lt;/p&gt;
+
+</code></pre></div></div>
+:ET

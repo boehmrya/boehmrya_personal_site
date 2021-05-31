@@ -23,7 +23,8 @@
   float: left;
 
   &,
-  &:visited {
+  &:visited,
+  &:hover {
     color: $white-color;
   }
 }
