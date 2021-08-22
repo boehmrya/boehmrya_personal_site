@@ -18,9 +18,11 @@ type: module
 core: 8.x
 ```
 
-Here is a theme hook with a test_var variable to be used in the template called my-template.html.twig:
+Then, create a file called test.module (with an opening php tag) in the root of the module directory, and place the theme hook below in it. Note - this implementation includes a test_var variable to be used in the template called my-template.html.twig:
 
 {% highlight php %}
+<?php
+
 function test_theme($existing, $type, $theme, $path) {
   return [
     'my_template' => [
