@@ -1,0 +1,2 @@
+I""<p>This post includes a small code snippet showing how to hide the help text on formatted text fields.  By default, on a regular text field (not a long text field), Drupal will include the full help text for the selected text format directly below the field.  This can take up a lot of space on the form, and clutter things up in general.  In particular, if we have more than one formatted (regular) text field on the form, we may want to disable this help text in order to clean things up a bit.  The code below shows a simple way to do so.</p>
+:ET

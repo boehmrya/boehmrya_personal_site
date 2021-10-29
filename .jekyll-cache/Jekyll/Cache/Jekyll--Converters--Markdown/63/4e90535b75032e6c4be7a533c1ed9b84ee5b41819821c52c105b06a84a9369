@@ -1,0 +1,2 @@
+I"–<p>In this post, for my future self and others, I outline a an example of a custom text filter for lazy loading images.  Specifically, the text filter prepares images for lazy loading by switching the values of the src and data-src attributes.  This offers a simplified version of the custom filter in the Lazy Load module.  I think itâ€™s helpful to provide this simple alternative for a few reasons:</p>
+:ET

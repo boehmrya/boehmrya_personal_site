@@ -1,0 +1,82 @@
+I"� <p>In this post, for my future self and others, I outline a an example of a custom text filter for lazy loading images.  Specifically, the text filter prepares images for lazy loading by switching the values of the src and data-src attributes.  This offers a simplified version of the custom filter in the Lazy Load module.  I think it’s helpful to provide this simple alternative for a few reasons:</p>
+
+<ul>
+  <li>You want to use a different lazy loading library the the one the Lazy Load module uses (it uses lazysizes)</li>
+  <li>You want to write your own script to lazy load images or iframes, rather than use a full library.</li>
+  <li>You don’t need all of the other features provided by the Lazy Load module, which includes a custom field formatter.</li>
+</ul>
+
+<p>So to get started, after <a href="https://www.drupal.org/docs/creating-custom-modules">creating a custom module</a>, we’ll first need to create the directory structure for a custom text filter.  In the root of the directory for your custom module, create the following directories: src/Plugin/Filter (this means, create the src directory in the root of the custom module, then create the Plugin directory inside the src directory, and then create the Filter directory inside the Plugin directory).  Inside the Filter directory, create a file called LazyLoadFilter.php.  This will hold the class (of the same name as the filename) for the custom filter.</p>
+
+<p>I want to note that the code sample below pulls heavily from the custom text filter in the Lazy Load module, so I want to credit that module.  This just provides a reduced, simplified version of the that module’s code.</p>
+
+<p>See directly below for the code sample for the custom filter.  Essentially, the code creates a virtual dom with the Html::load method, and then uses the \DOMXPath native php class to query the dom for image elements.  The code then loops over the result set of image tag objects, and manipulates the attributes and classes to achieve the final result of adding the ‘lazyload’ class, and switching the src and data-src attribute values.</p>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="kn">namespace</span> <span class="nn">Drupal\custom_alter\Plugin\Filter</span><span class="p">;</span>
+
+<span class="kn">use</span> <span class="nc">Drupal\Component\Utility\Html</span><span class="p">;</span>
+<span class="kn">use</span> <span class="nc">Drupal\Core\Form\FormStateInterface</span><span class="p">;</span>
+<span class="kn">use</span> <span class="nc">Drupal\filter\FilterProcessResult</span><span class="p">;</span>
+<span class="kn">use</span> <span class="nc">Drupal\filter\Plugin\FilterBase</span><span class="p">;</span>
+
+<span class="cd">/**
+ * Provides a filter to lazy-load images.
+ *
+ * @Filter(
+ *   id = "lazy_load_filter",
+ *   title = @Translation("Lazy load images"),
+ *   description = @Translation("Lazy-load images in activated text-formats."),
+ *   type = Drupal\filter\Plugin\FilterInterface::TYPE_TRANSFORM_REVERSIBLE,
+ *   settings = {
+ *     "image" = TRUE,
+ *   },
+ *   weight = 20
+ * )
+ */</span>
+
+<span class="kd">class</span> <span class="nc">LazyLoadFilter</span> <span class="kd">extends</span> <span class="nc">FilterBase</span> <span class="p">{</span>
+
+  <span class="cd">/**
+   * {@inheritdoc}
+   */</span>
+  <span class="k">public</span> <span class="k">function</span> <span class="n">process</span><span class="p">(</span><span class="nv">$text</span><span class="p">,</span> <span class="nv">$langcode</span><span class="p">):</span> <span class="kt">FilterProcessResult</span> <span class="p">{</span>
+
+    <span class="nv">$result</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">FilterProcessResult</span><span class="p">(</span><span class="nv">$text</span><span class="p">);</span>
+    <span class="nv">$html_dom</span> <span class="o">=</span> <span class="nc">Html</span><span class="o">::</span><span class="nf">load</span><span class="p">(</span><span class="nv">$text</span><span class="p">);</span>
+    <span class="nv">$xpath</span> <span class="o">=</span> <span class="k">new</span> <span class="err">\</span><span class="nf">DOMXPath</span><span class="p">(</span><span class="nv">$html_dom</span><span class="p">);</span>
+
+    <span class="cd">/** @var \DOMElement $node */</span>
+    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$xpath</span><span class="o">-&gt;</span><span class="nf">query</span><span class="p">(</span><span class="s1">'//img'</span><span class="p">)</span> <span class="k">as</span> <span class="nv">$node</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nv">$classes</span> <span class="o">=</span> <span class="nb">empty</span><span class="p">(</span><span class="nv">$node</span><span class="o">-&gt;</span><span class="nf">getAttribute</span><span class="p">(</span><span class="s1">'class'</span><span class="p">))</span> <span class="o">?</span>
+        <span class="p">[]</span> <span class="o">:</span> <span class="nb">explode</span><span class="p">(</span><span class="s1">' '</span><span class="p">,</span> <span class="nv">$node</span><span class="o">-&gt;</span><span class="nf">getAttribute</span><span class="p">(</span><span class="s1">'class'</span><span class="p">));</span>
+
+      <span class="c1">// Get original source value.</span>
+      <span class="nv">$src</span> <span class="o">=</span> <span class="nv">$node</span><span class="o">-&gt;</span><span class="nf">getAttribute</span><span class="p">(</span><span class="s1">'src'</span><span class="p">);</span>
+
+      <span class="k">if</span> <span class="p">(</span><span class="nv">$node</span><span class="o">-&gt;</span><span class="n">tagName</span> <span class="o">===</span> <span class="s1">'img'</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nb">in_array</span><span class="p">(</span><span class="s1">'skip-lazy'</span><span class="p">,</span> <span class="nv">$classes</span><span class="p">,</span> <span class="kc">TRUE</span><span class="p">))</span> <span class="p">{</span>
+          <span class="c1">// Leave this node unchanged if it has the skip class</span>
+          <span class="k">continue</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="c1">// Add Lazysizes selector class name to element attributes.</span>
+        <span class="nv">$classes</span><span class="p">[]</span> <span class="o">=</span> <span class="s1">'lazyload'</span><span class="p">;</span>
+        <span class="nv">$classes</span> <span class="o">=</span> <span class="nb">array_unique</span><span class="p">(</span><span class="nv">$classes</span><span class="p">);</span>
+        <span class="nv">$node</span><span class="o">-&gt;</span><span class="nf">setAttribute</span><span class="p">(</span><span class="s1">'class'</span><span class="p">,</span> <span class="nb">implode</span><span class="p">(</span><span class="s1">' '</span><span class="p">,</span> <span class="nv">$classes</span><span class="p">));</span>
+
+        <span class="c1">// Change source attribute from `src` to `data-src`</span>
+        <span class="nv">$opt_src</span> <span class="o">=</span> <span class="s1">'data-src'</span><span class="p">;</span>
+        <span class="nv">$node</span><span class="o">-&gt;</span><span class="nf">removeAttribute</span><span class="p">(</span><span class="s1">'src'</span><span class="p">);</span>
+        <span class="nv">$node</span><span class="o">-&gt;</span><span class="nf">setAttribute</span><span class="p">(</span><span class="nv">$opt_src</span><span class="p">,</span> <span class="nv">$src</span><span class="p">);</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="nv">$result</span><span class="o">-&gt;</span><span class="nf">setProcessedText</span><span class="p">(</span><span class="nc">Html</span><span class="o">::</span><span class="nb">serialize</span><span class="p">(</span><span class="nv">$html_dom</span><span class="p">));</span>
+
+    <span class="k">return</span> <span class="nv">$result</span><span class="p">;</span>
+  <span class="p">}</span>
+
+<span class="p">}</span></code></pre></figure>
+
+:ET

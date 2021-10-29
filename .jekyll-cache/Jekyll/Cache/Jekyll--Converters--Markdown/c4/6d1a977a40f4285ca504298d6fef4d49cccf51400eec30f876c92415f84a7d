@@ -1,0 +1,28 @@
+I"<p>This post includes a small code snippet showing how to hide the help text on formatted text fields.  By default, on a regular text field (not a long text field), Drupal will include the full help text for the selected text format directly below the field.  This can take up a lot of space on the form, and clutter things up in general.  In particular, if we have more than one formatted (regular) text field on the form, we may want to disable this help text in order to clean things up a bit.  The code below shows a simple way to do so.</p>
+
+<p>First, go through the regular process of creating a custom module.  Then, include the following form_alter hook implementation, which includes a special function as the #after_build callback.  Note - the #after_build callback is only run if the widget is for a text field.</p>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cd">/**
+* Implements hook_field_widget_form_alter().
+*/</span>
+
+<span class="k">function</span> <span class="n">MODULE_NAME_field_widget_form_alter</span><span class="p">(</span><span class="o">&amp;</span><span class="nv">$element</span><span class="p">,</span> <span class="nc">FormStateInterface</span> <span class="nv">$form_state</span><span class="p">,</span> <span class="nv">$context</span><span class="p">)</span> <span class="p">{</span>
+ <span class="k">if</span> <span class="p">(</span><span class="nv">$context</span><span class="p">[</span><span class="s1">'widget'</span><span class="p">]</span> <span class="k">instanceof</span> <span class="err">\</span><span class="nc">Drupal\text\Plugin\Field\FieldWidget\TextfieldWidget</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nv">$element</span><span class="p">[</span><span class="s1">'#after_build'</span><span class="p">][]</span> <span class="o">=</span> <span class="s1">'_allowed_formats_remove_textarea_help'</span><span class="p">;</span>
+ <span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="cd">/**
+* #after_build callback.
+*/</span>
+<span class="k">function</span> <span class="n">_allowed_formats_remove_textarea_help</span><span class="p">(</span><span class="nv">$form_element</span><span class="p">,</span> <span class="kt">FormStateInterface</span> <span class="nv">$form_state</span><span class="p">)</span> <span class="p">{</span>
+ <span class="k">if</span> <span class="p">(</span><span class="k">isset</span><span class="p">(</span><span class="nv">$form_element</span><span class="p">[</span><span class="s1">'format'</span><span class="p">]))</span> <span class="p">{</span>
+   <span class="c1">// All this stuff is needed to hide the help text.</span>
+   <span class="nb">unset</span><span class="p">(</span><span class="nv">$form_element</span><span class="p">[</span><span class="s1">'format'</span><span class="p">][</span><span class="s1">'guidelines'</span><span class="p">]);</span>
+ <span class="p">}</span>
+
+ <span class="k">return</span> <span class="nv">$form_element</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+:ET
