@@ -161,6 +161,8 @@ table td { border: 1px solid #e8e8e8; }
 
 .portfolio-wrap .portfolio-item img { border: 1px solid #eee; }
 
+@media (max-width: 499px) { .portfolio-wrap .portfolio-item { width: 100%; } }
+
 .portfolio-wrap h3.portfolio-title { line-height: 2rem; margin-top: 15px; }
 
 /** Syntax highlighting styles */

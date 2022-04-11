@@ -279,6 +279,10 @@
     img {
       border: 1px solid #eee;
     }
+
+    @media (max-width: 499px) {
+      width: 100%;
+    }
   }
 
   h3.portfolio-title {
