@@ -1,49 +1,4 @@
-<!DOCTYPE html>
-<html lang="en"><head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>Ryan Boehm’s Developer Site | Ryan Boehm’s Developer Blog and Site.</title>
-<meta name="generator" content="Jekyll v4.2.0" />
-<meta property="og:title" content="Ryan Boehm’s Developer Site" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="Ryan Boehm’s Developer Blog and Site." />
-<meta property="og:description" content="Ryan Boehm’s Developer Blog and Site." />
-<link rel="canonical" href="/" />
-<meta property="og:url" content="/" />
-<meta property="og:site_name" content="Ryan Boehm’s Developer Site" />
-<meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Ryan Boehm’s Developer Site" />
-<script type="application/ld+json">
-{"description":"Ryan Boehm’s Developer Blog and Site.","@type":"WebSite","headline":"Ryan Boehm’s Developer Site","url":"/","name":"Ryan Boehm’s Developer Site","@context":"https://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="Ryan Boehm's Developer Site" /><!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-50863945-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-50863945-1');
-</script>
-<link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet">
-</head>
-<body><header class="site-header" role="banner">
-
-  <div class="wrapper"><a class="site-title" rel="author" href="/">Ryan Boehm&#39;s Developer Site</a>
-  </div>
-</header>
-<main class="page-content" aria-label="Content">
-      <div class="wrapper">
-        <article class="post">
-
-  <header class="post-header">
-    <h1 class="post-title"></h1>
-  </header>
-
-  <div class="post-content">
-    <p>Hello and Welcome! I’m a web developer who focuses on front-end work.  I’m also proficient in Drupal and Wordpress, and have some experience in many other web technologies.</p>
+I"[<p>Hello and Welcome! I’m a web developer who focuses on front-end work.  I’m also proficient in Drupal and Wordpress, and have some experience in many other web technologies.</p>
 
 <p>Profile Links:</p>
 
@@ -99,26 +54,4 @@
     </div>
   </div>
 </div>
-
-  </div>
-
-</article>
-
-      </div>
-    </main><footer class="site-footer h-card">
-  <data class="u-url" href="/"></data>
-
-  <div class="wrapper">
-
-    <div class="footer-col-wrapper">
-      <div class="footer-col">
-        2022
-      </div>
-    </div>
-
-  </div>
-
-</footer>
-</body>
-
-</html>
+:ET
