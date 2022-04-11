@@ -141,7 +141,7 @@ table td { border: 1px solid #e8e8e8; }
 
 .post-content { margin-bottom: 30px; }
 
-.post-content h2 { font-size: 32px; line-height: 40px;}
+.post-content h2 { font-size: 32px; }
 
 @media screen and (max-width: 800px) { .post-content h2 { font-size: 28px; } }
 
@@ -160,8 +160,6 @@ table td { border: 1px solid #e8e8e8; }
 .portfolio-wrap .portfolio-item img { border: 1px solid #eee; }
 
 .portfolio-wrap h3.portfolio-title { line-height: 2rem; margin-top: 15px; }
-
-.portfolio-section:last-child { margin-top: 30px; }
 
 /** Syntax highlighting styles */
 .highlight { background: #fff; }
